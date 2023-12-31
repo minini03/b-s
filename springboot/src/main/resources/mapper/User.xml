@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springboot.mapper.UserMapper">
+    <insert id="save">
+        insert into user(name, password, email)
+        values(#{name}, #{password}, #{email})
+    </insert>
+
+    <select id="list" resultType="com.example.springboot.entity.User">
+        select * from user
+    </select>
+
+    <select id="listByCondition" resultType="com.example.springboot.entity.User">
+        select * from user
+            <where>
+                <if test="name != null and name != ''">
+                    name like concat('%',#{ name },'%')
+                </if>
+                <if test="id!=null and id != ''">
+                    and id = #{ id }
+                </if>
+            </where>
+    </select>
+
+
+    <select id="getById" resultType="com.example.springboot.entity.User">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="getByName" resultType="com.example.springboot.entity.User">
+        select * from user where name = #{ name }
+    </select>
+
+    <select id="getByNameAndPassword" resultType="com.example.springboot.entity.User">
+        select * from user where name = #{ name } and password = #{ password }
+    </select>
+
+    <update id="update">
+        update user set name = #{name}, email = #{email}, password = #{password}, status = #{status} where id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        update user set password = #{newPass} where name = #{name} and password = #{password}
+    </update>
+
+
+
+    <delete id="delete">
+        delete from user where id = #{id}
+    </delete>
+</mapper>
